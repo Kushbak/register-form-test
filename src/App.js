@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useStoreon } from 'storeon/react'
+import Register from './components/Register'
+import Main from './components/Main'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const { dispatch, profileData, isAuth } = useStoreon('profileData', 'isAuth')
+
+    const registerHandler = (formData) => new Promise(resolve => {
+        setTimeout(() => {
+            dispatch('register', formData)
+            resolve()
+        }, 3000)
+    })
+
+    return (
+        <div className="App">
+            {
+                isAuth
+                    ? <Main profile={profileData} />
+                    : <Register register={registerHandler} />
+            }
+        </div>
+    )
 }
 
-export default App;
+export default App
